@@ -200,14 +200,14 @@ XmlNode::XmlNode(xmlNode* node) : xml_obj(node) {
 XmlNode::~XmlNode() {
     xml_obj->_private = NULL;
 
-    // release the hold and allow the document to be freed
-    XmlDocument* doc = static_cast<XmlDocument*>(xml_obj->doc->_private);
-    doc->unref();
-
-    // We do not free the xmlNode here if it is linked to a document
-    // It will be freed when the doc is freed
-    if (xml_obj->parent == NULL)
-      xmlFreeNode(xml_obj);
+    if (xml_obj->type != -1) {
+        XmlDocument* doc = static_cast<XmlDocument*>(xml_obj->doc->_private);
+        doc->unref();
+         // We do not free the xmlNode here if it is linked to a document
+         // It will be freed when the doc is freed
+        if (xml_obj->parent == NULL)
+            xmlFreeNode(xml_obj);
+    }
 }
 
 v8::Handle<v8::Value>
