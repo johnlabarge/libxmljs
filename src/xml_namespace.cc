@@ -77,10 +77,9 @@ XmlNamespace::XmlNamespace(xmlNs* node) : xml_obj(node)
 
 XmlNamespace::~XmlNamespace()
 {
-    xml_obj->_private = NULL;
-
-    if (xml_obj->context)
+ if (xml_obj && xml_obj->context)
     {
+        xml_obj->_private = NULL;
         // release the hold and allow the document to be freed
         XmlDocument* doc = static_cast<XmlDocument*>(xml_obj->context->_private);
         doc->unref();
